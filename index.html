@@ -4,29 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booming Bulls Academy</title>
+
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1245171480675713');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1245171480675713&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
-
     body {
       background: linear-gradient(180deg, #0f172a, #111827, #1e293b);
       color: #fff;
       line-height: 1.6;
     }
-
     .container {
       max-width: 400px;
       margin: auto;
       padding: 20px;
     }
-
-    /* HEADER */
     .header {
       display: flex;
       align-items: center;
@@ -34,41 +48,34 @@
       gap: 10px;
       margin-bottom: 20px;
     }
-
     .logo-img {
       width: 40px;
       height: auto;
       border-radius: 8px;
     }
-
     .logo-text {
       font-size: 1.2rem;
       font-weight: bold;
       color: #4ade80;
       text-align: center;
     }
-
     .sebi-text {
       color: #fff;
       font-size: 0.8rem;
       text-align: center;
     }
-
-    /* HERO SECTION */
     .hero-title {
       text-align: center;
       font-size: 1.6rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
-
     .hero-sub {
       text-align: center;
       color: #d1d5db;
       margin-bottom: 15px;
       font-size: 0.95rem;
     }
-
     .btn {
       display: flex;
       justify-content: center;
@@ -83,26 +90,21 @@
       margin: 15px 0;
       font-size: 0.95rem;
     }
-
     .btn img {
       width: 20px;
       height: 20px;
     }
-
-    /* FEATURES */
     .section-title {
       font-weight: 600;
       text-align: center;
       margin: 20px 0 10px;
       color: #4ade80;
     }
-
     .features {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
     .feature-card {
       background: #1f2937;
       padding: 12px;
@@ -110,14 +112,11 @@
       text-align: center;
       font-size: 0.85rem;
     }
-
     .feature-card span {
       display: block;
       margin-bottom: 6px;
       font-size: 1.2rem;
     }
-
-    /* TRACK RECORD */
     .record {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -125,14 +124,12 @@
       margin-top: 10px;
       text-align: center;
     }
-
     .record-box {
       background: #1f2937;
       padding: 10px;
       border-radius: 10px;
       font-size: 0.8rem;
     }
-
     .accuracy-badge {
       display: block;
       text-align: center;
@@ -143,8 +140,6 @@
       border-radius: 20px;
       font-weight: bold;
     }
-
-    /* TESTIMONIALS */
     .testimonial {
       background: #1f2937;
       padding: 12px;
@@ -152,41 +147,35 @@
       border-radius: 10px;
       font-size: 0.85rem;
     }
-
     .testimonial strong {
       display: block;
       font-size: 0.9rem;
       margin-bottom: 5px;
       color: #4ade80;
     }
-
-    /* FOOTER */
     footer {
       text-align: center;
       padding: 20px 0;
       font-size: 0.8rem;
       color: #9ca3af;
     }
-
     .social {
       display: flex;
       justify-content: center;
       gap: 15px;
       margin-top: 10px;
     }
-
     .locations {
       font-size: 0.8rem;
       color: #ccc;
       margin-top: 15px;
       text-align: center;
     }
-
   </style>
 </head>
 <body>
   <div class="container">
-
+    <!-- Your full original body content remains unchanged -->
     <!-- HEADER -->
     <div class="header">
       <img src="https://boomingbulls.com/wp-content/uploads/2023/05/Booming-Bulls-Logo.jpg" alt="Booming Bulls Logo" class="logo-img">
@@ -271,7 +260,6 @@
       </div>
       <div class="locations">Surat | Delhi | Jaipur | Hyderabad | Ahmedabad | Indore | Nagpur | Mumbai</div>
     </footer>
-
   </div>
 </body>
 </html>
