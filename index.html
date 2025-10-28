@@ -28,8 +28,8 @@
             box-shadow: 0 0 15px #25D366, 0 0 25px #25D366;
             animation: pulse-glow 1.5s infinite ease-in-out alternate;
             transition: all 0.3s ease;
-            position: relative; /* Keep relative if needed for other pseudo-elements in future */
-            z-index: 10; /* Ensure button is clickable above the body listener */
+            position: relative; 
+            z-index: 10; 
         }
 
         .glow-button:hover {
@@ -46,19 +46,11 @@
             }
         }
 
-        /* Adjust margin for the text above the button */
-        .text-above-button {
-            margin-bottom: 1rem; /* Reduced margin */
-            margin-top: 2rem; /* Ensure it's not too close to content above */
-        }
-        /* Adjust margin for the services section */
-        .services-section-mt {
-            margin-top: 2rem; /* Reduced margin */
-        }
+        .text-above-button { margin-bottom: 1rem; margin-top: 2rem; }
+        .services-section-mt { margin-top: 2rem; }
         
-        /* Main content container */
         .content-container {
-            position: relative; /* Needed to interact above the body listener */
+            position: relative; 
             z-index: 5;
         }
 
@@ -92,9 +84,13 @@
             <!-- Main Call-to-Action Button --><p class="text-lg font-semibold text-gray-100 text-above-button"> 
                 अभी जुड़ें!
             </p>
-            <div class="mb-8 relative"> <!-- Removed z-index --><a href="https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt"
+            <div class="mb-8 relative"> 
+                <!-- 
+                  (Updated Link) 
+                  The href is now just a fallback. The 'click' is handled by JavaScript.
+                --><a href="https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt"
                    class="glow-button inline-flex items-center justify-center w-full max-w-sm mx-auto text-white text-2xl md:text-3xl font-bold py-4 px-6 rounded-full"
-                   target="_blank" rel="noopener noreferrer">
+                   rel="noopener noreferrer"> 
                     
                     <!-- WhatsApp SVG Icon --><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 mr-3" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.447-4.434-9.884-9.888-9.884-5.448 0-9.886 4.434-9.889 9.884-.001 2.225.651 4.315 1.847 6.03l-1.214 4.404 4.464-1.157z"/>
@@ -138,36 +134,62 @@
 
     </div>
 
-    <!-- JavaScript for redirect logic -->
+    <!-- *** NEW JavaScript for Smart Redirect Logic *** -->
     <script>
         (function() {
-            // 1. Define the redirect URL
-            // Get the URL from the main button itself
-            const button = document.querySelector('.glow-button');
-            if (!button) return; // Failsafe if button not found
-            
-            const redirectUrl = button.href;
+            // 1. Define the links
+            const deepLink = "whatsapp://chat?code=LWGxPMOXiqtHPNlGLwiiS5";
+            const fallbackLink = "https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt";
+            let autoRedirectTimer = null; // To store the 5-second timer
 
-            // 2. Auto-redirect after 5 seconds
-            const timer = setTimeout(function() {
-                window.location.href = redirectUrl;
-            }, 5000); // 5000 milliseconds = 5 seconds
+            // 2. Create the redirect function
+            function performRedirect() {
+                // Try to open the deep link first
+                try {
+                    window.location.href = deepLink;
+                } catch (e) {
+                    // This might fail in some sandboxed environments
+                }
 
-            // 3. Make the whole page clickable
+                // Set a fallback timer. If the app doesn't open (or user cancels),
+                // this will run.
+                setTimeout(function() {
+                    // Check if the page is still visible. If it is, the redirect failed.
+                    if (!document.hidden && !document.webkitHidden) {
+                        window.location.href = fallbackLink;
+                    }
+                }, 2500); // 2.5 seconds
+            }
+
+            // 3. Auto-redirect after 5 seconds
+            autoRedirectTimer = setTimeout(performRedirect, 5000);
+
+            // 4. Make the whole page (body) clickable
             document.body.addEventListener('click', function(event) {
-                // Check if the click was on the button (or any link)
-                // If it was, let the link do its job and don't double-redirect.
-                if (event.target.closest('a')) {
-                    clearTimeout(timer); // Also clear timer if they click the button
-                    return;
+                // IMPORTANT: If the click is ON the button, let the button's own
+                // listener handle it. Don't do it twice.
+                if (event.target.closest('.glow-button')) {
+                    return; 
                 }
                 
-                // If the click was anywhere else, redirect
-                clearTimeout(timer); // Clear timer if they click anywhere
-                window.location.href = redirectUrl;
+                // Click was anywhere else on the page
+                clearTimeout(autoRedirectTimer);
+                performRedirect();
             });
+
+            // 5. Make the button itself trigger the smart redirect
+            const button = document.querySelector('.glow-button');
+            if (button) {
+                button.addEventListener('click', function(event) {
+                    // Stop the 'a' tag from just opening the https link
+                    event.preventDefault(); 
+                    clearTimeout(autoRedirectTimer);
+                    performRedirect();
+                });
+            }
         })();
     </script>
+    <!-- *** End of new JavaScript *** -->
 
 </body>
 </html>
