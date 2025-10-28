@@ -85,12 +85,10 @@
                 अभी जुड़ें!
             </p>
             <div class="mb-8 relative"> 
-                <!-- 
-                  The href is now blank. The click is handled ONLY by JavaScript.
-                --><a href="#"
-                   id="whatsapp-button"
+                <!-- This is the updated link -->
+                <a href="https://shorturl.at/QlPGb"
                    class="glow-button inline-flex items-center justify-center w-full max-w-sm mx-auto text-white text-2xl md:text-3xl font-bold py-4 px-6 rounded-full"
-                   rel="noopener noreferrer"> 
+                   target="_blank" rel="noopener noreferrer"> 
                     
                     <!-- WhatsApp SVG Icon --><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 mr-3" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.447-4.434-9.884-9.888-9.884-5.448 0-9.886 4.434-9.889 9.884-.001 2.225.651 4.315 1.847 6.03l-1.214 4.404 4.464-1.157z"/>
@@ -134,34 +132,7 @@
 
     </div>
 
-    <!-- *** UPDATED JavaScript (Data URI Trick) *** -->
-    <script>
-        (function() {
-            // The WhatsApp link
-            const waLink = "https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt";
-            
-            // Create a "launcher" page as a Data URI.
-            // This page will immediately try to redirect to the WhatsApp link.
-            const launcherHtml = `<html><head><meta http-equiv="refresh" content="0;url=${waLink}"></head><body>Redirecting to WhatsApp...</body></html>`;
-            
-            // We encode it so it can be used in a URL.
-            const launcherDataUri = `data:text/html;charset=utf-8,${encodeURIComponent(launcherHtml)}`;
-            
-            const button = document.getElementById('whatsapp-button');
-            
-            if (button) {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault(); // Stop the blank '#' link
-                    
-                    // Open the new "launcher" page in a new tab.
-                    // The hope is that '_blank' forces it into the default browser,
-                    // bypassing the in-app browser's restrictions.
-                    window.open(launcherDataUri, '_blank');
-                });
-            }
-        })();
-    </script>
-    <!-- *** End of new JavaScript *** -->
+    <!-- All problematic JavaScript has been removed for stability in Facebook's browser -->
 
 </body>
 </html>
