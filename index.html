@@ -134,25 +134,18 @@
 
     </div>
 
-    <!-- *** NEW JavaScript (Final Solution) *** -->
+    <!-- *** UPDATED JavaScript (Data URI Trick) *** -->
     <script>
         (function() {
             // The WhatsApp link
             const waLink = "https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt";
             
-            // The trick: We format the link to tell the browser to open it externally.
-            // For Android, this creates an "intent" to open the link in the default browser.
-            // For iOS, this is not needed, but we'll use a standard new tab.
+            // Create a "launcher" page as a Data URI.
+            // This page will immediately try to redirect to the WhatsApp link.
+            const launcherHtml = `<html><head><meta http-equiv="refresh" content="0;url=${waLink}"></head><body>Redirecting to WhatsApp...</body></html>`;
             
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const isAndroid = /android/i.test(userAgent);
-            
-            let finalLink = waLink;
-            
-            if (isAndroid) {
-                // This special "intent" URL tells Android to open the waLink in an external app (the browser).
-                finalLink = "intent:" + waLink + "#Intent;action=android.intent.action.VIEW;scheme=https;end";
-            }
+            // We encode it so it can be used in a URL.
+            const launcherDataUri = `data:text/html;charset=utf-8,${encodeURIComponent(launcherHtml)}`;
             
             const button = document.getElementById('whatsapp-button');
             
@@ -160,10 +153,10 @@
                 button.addEventListener('click', function(event) {
                     event.preventDefault(); // Stop the blank '#' link
                     
-                    // Open the link. 
-                    // On Android, this triggers the "intent" to open Chrome.
-                    // On iOS, this will open the link in a new tab (which often prompts to open WhatsApp).
-                    window.open(finalLink, '_blank');
+                    // Open the new "launcher" page in a new tab.
+                    // The hope is that '_blank' forces it into the default browser,
+                    // bypassing the in-app browser's restrictions.
+                    window.open(launcherDataUri, '_blank');
                 });
             }
         })();
