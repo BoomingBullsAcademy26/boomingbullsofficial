@@ -13,7 +13,7 @@
         /* Apply Hindi font first, then fallback to Inter */
         body {
             font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
-            cursor: pointer; /* Change cursor to pointer for the whole page */
+            /* Removed cursor: pointer; */
         }
         /* Custom gradient for the premium look */
         .premium-bg {
@@ -86,9 +86,9 @@
             </p>
             <div class="mb-8 relative"> 
                 <!-- 
-                  (Updated Link) 
-                  The href is now just a fallback. The 'click' is handled by JavaScript.
-                --><a href="https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt"
+                  The href is now blank. The click is handled ONLY by JavaScript.
+                --><a href="#"
+                   id="whatsapp-button"
                    class="glow-button inline-flex items-center justify-center w-full max-w-sm mx-auto text-white text-2xl md:text-3xl font-bold py-4 px-6 rounded-full"
                    rel="noopener noreferrer"> 
                     
@@ -128,63 +128,42 @@
 
         <footer class="mt-10 pt-6 border-t border-gray-700">
             <p class="text-xs text-gray-400 text-center">
-                <strong>अस्वीकरण:</strong> यह खेल वित्तीय जोखिम भरा हो सकता है और इसकी लत लग सकती है। कृपया अपनी जिम्मेदारी पर और अपने जोखिम पर खेलें। यह सेवा केवल 18+ उम्र के वयस्कों के लिए है।
+                <strong>अस्वीकरण:</strong> यह खेल वित्तीय जोखिम भरा हो सकता है और इसकी लत लग सकती है। कृपया अपनी जिम्मेदारी पर और अपने जोखिम पर खेलें। यह सेवा केवल 18+ वयस्कों के लिए है।
             </p>
         </footer>
 
     </div>
 
-    <!-- *** NEW JavaScript for Smart Redirect Logic *** -->
+    <!-- *** NEW JavaScript (Final Solution) *** -->
     <script>
         (function() {
-            // 1. Define the links
-            const deepLink = "whatsapp://chat?code=LWGxPMOXiqtHPNlGLwiiS5";
-            const fallbackLink = "https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt";
-            let autoRedirectTimer = null; // To store the 5-second timer
-
-            // 2. Create the redirect function
-            function performRedirect() {
-                // Try to open the deep link first
-                try {
-                    window.location.href = deepLink;
-                } catch (e) {
-                    // This might fail in some sandboxed environments
-                }
-
-                // Set a fallback timer. If the app doesn't open (or user cancels),
-                // this will run.
-                setTimeout(function() {
-                    // Check if the page is still visible. If it is, the redirect failed.
-                    if (!document.hidden && !document.webkitHidden) {
-                        window.location.href = fallbackLink;
-                    }
-                }, 2500); // 2.5 seconds
+            // The WhatsApp link
+            const waLink = "https://chat.whatsapp.com/LWGxPMOXiqtHPNlGLwiiS5?mode=wwt";
+            
+            // The trick: We format the link to tell the browser to open it externally.
+            // For Android, this creates an "intent" to open the link in the default browser.
+            // For iOS, this is not needed, but we'll use a standard new tab.
+            
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isAndroid = /android/i.test(userAgent);
+            
+            let finalLink = waLink;
+            
+            if (isAndroid) {
+                // This special "intent" URL tells Android to open the waLink in an external app (the browser).
+                finalLink = "intent:" + waLink + "#Intent;action=android.intent.action.VIEW;scheme=https;end";
             }
-
-            // 3. Auto-redirect after 5 seconds
-            autoRedirectTimer = setTimeout(performRedirect, 5000);
-
-            // 4. Make the whole page (body) clickable
-            document.body.addEventListener('click', function(event) {
-                // IMPORTANT: If the click is ON the button, let the button's own
-                // listener handle it. Don't do it twice.
-                if (event.target.closest('.glow-button')) {
-                    return; 
-                }
-                
-                // Click was anywhere else on the page
-                clearTimeout(autoRedirectTimer);
-                performRedirect();
-            });
-
-            // 5. Make the button itself trigger the smart redirect
-            const button = document.querySelector('.glow-button');
+            
+            const button = document.getElementById('whatsapp-button');
+            
             if (button) {
                 button.addEventListener('click', function(event) {
-                    // Stop the 'a' tag from just opening the https link
-                    event.preventDefault(); 
-                    clearTimeout(autoRedirectTimer);
-                    performRedirect();
+                    event.preventDefault(); // Stop the blank '#' link
+                    
+                    // Open the link. 
+                    // On Android, this triggers the "intent" to open Chrome.
+                    // On iOS, this will open the link in a new tab (which often prompts to open WhatsApp).
+                    window.open(finalLink, '_blank');
                 });
             }
         })();
